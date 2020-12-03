@@ -6,8 +6,14 @@ const bodyParser = require("body-parser");
 const port = process.env.PORT || 8000;
 
 const app = express();
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+app.use(
+  bodyParser.urlencoded({
+    limit: "50mb",
+    extended: true,
+    parameterLimit: 1000000000,
+  })
+);
+app.use(bodyParser.json({ limit: "50mb" }));
 
 glob.sync("./api/**/*.js").forEach((file) => {
   const handler = require(path.resolve(file));
