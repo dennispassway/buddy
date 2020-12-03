@@ -38,15 +38,15 @@ exports.createReceiver = function (signingSecret) {
           return;
         }
 
-        // We're delaying closing the http response because @slack/bolt auto-acks certain events, which will close the http request and subsequently
-        setTimeout(() => {
-          if (response instanceof Error) {
-            res.status(500).send();
-          }
+        if (response instanceof Error) {
+          res.status(500).send();
+        } else if (!response) {
+          res.send("");
+        } else {
+          res.send(response);
+        }
 
-          res.send(!response ? "" : response);
-          ackCalled = true;
-        }, 2000);
+        ackCalled = true;
       },
     };
 
