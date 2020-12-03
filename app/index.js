@@ -15,10 +15,10 @@ const app = new App({
   token: process.env.SLACK_BOT_TOKEN,
 });
 
-app.event("app_home_opened", handleAppHome);
-app.event("message", handleMessage);
-app.command("/buddy", handleCommand);
-ACTIONS.map((action) => app.action(action, handleAction));
+// app.event("app_home_opened", handleAppHome);
+// app.event("message", handleMessage);
+// app.command("/buddy", handleCommand);
+// ACTIONS.map((action) => app.action(action, handleAction));
 app.error((error) => console.error(error)); /* @TODO: sentry */
 
 module.exports = { app, receiver };
