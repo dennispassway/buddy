@@ -7,7 +7,7 @@ These environment variables should be set up at your hosting provider.
 
 ```
 ADMIN_USERS=
-DATABASE_FILE_NAME=
+SQLITE_DATABASE_NAME=
 DATABASE_TYPE=
 DISABLE_USER_NOTIFICATION=
 MONGO_DB_NAME=

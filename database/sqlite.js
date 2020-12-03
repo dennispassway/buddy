@@ -4,7 +4,7 @@ const { INTEGER_SETTINGS } = require("../app/constants");
 
 const dbPath = path.resolve(
   process.cwd(),
-  `${process.env.DATABASE_FILE_NAME}.sqlite`
+  `${process.env.SQLITE_DATABASE_NAME}.sqlite`
 );
 const db = new sqlite3.Database(dbPath);
 
