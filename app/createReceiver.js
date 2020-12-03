@@ -25,11 +25,11 @@ exports.createReceiver = function (signingSecret) {
     }
 
     if (!req.body || !req.body.type) {
-      res.status(400).send("Missing event type");
+      return res.status(400).send("Missing event type");
     }
 
     const event = {
-      body: req.body,
+      body: req.body || {},
       ack: (response) => {
         if (ackCalled) {
           return;
