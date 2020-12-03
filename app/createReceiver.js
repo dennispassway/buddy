@@ -24,8 +24,8 @@ exports.createReceiver = function (signingSecret) {
       return respondToUrlVerification(req, res);
     }
 
-    if (!req.body || !req.body.type) {
-      return res.status(400).send("Missing event type");
+    if (req.body.payload) {
+      req.body = JSON.parse(req.body.payload);
     }
 
     const event = {
