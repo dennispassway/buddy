@@ -4,7 +4,8 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "nodemon dev-server"
+    "dev": "nodemon dev-server",
+    "build": "touch database.sqlite"
   },
   "engines": {
     "node": "12.x"
