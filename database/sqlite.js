@@ -15,7 +15,7 @@ function getLatestGroups(amount = 1) {
 
       // Note: this gets a max of 200, could be a problem if an organisation has more than 400 members.
       db.all(
-        `SELECT createdAt FROM groups ORDER BY createdAt DESC LIMIT 200`,
+        `SELECT createdAt FROM groups ORDER BY createdAt ASC LIMIT 200`,
         (err, rows) => {
           if (err) return reject(err);
 
@@ -23,10 +23,7 @@ function getLatestGroups(amount = 1) {
             ...new Set(rows.map(({ createdAt }) => createdAt)),
           ];
 
-          const latestUniqueCreatedAts = uniqueCreatedAts.slice(
-            uniqueCreatedAts.length - amount,
-            uniqueCreatedAts.length
-          );
+          const latestUniqueCreatedAts = uniqueCreatedAts.slice(0, amount);
 
           const whereQuery =
             latestUniqueCreatedAts.length > 0
