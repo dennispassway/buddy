@@ -1,5 +1,4 @@
 const {
-  verifySignatureAndParseRawBody,
   respondToSslCheck,
   respondToUrlVerification,
 } = require("@slack/bolt/dist/ExpressReceiver");
@@ -25,11 +24,9 @@ exports.createReceiver = function (signingSecret) {
       return respondToUrlVerification(req, res);
     }
 
-    await verifySignatureAndParseRawBody(req, null, (error) => {
-      if (error) {
-        console.error(error); // @TODO: sentry
-      }
-    });
+    if (!req.body || !req.body.type) {
+      res.status(400).send("Missing event type");
+    }
 
     const event = {
       body: req.body,
