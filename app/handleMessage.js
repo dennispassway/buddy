@@ -1,5 +1,3 @@
-require("dotenv").config();
-
 const {
   DEFAULT_SETTINGS,
   SETTING_DAY_TO_REGENERATE,
@@ -19,8 +17,6 @@ async function handleMessage({ client }) {
 
     const utcOffset =
       settings[SETTING_UTC_OFFSET] || DEFAULT_SETTINGS[SETTING_UTC_OFFSET];
-
-    console.log(utcOffset);
 
     const todayDate = getUTCDateAt9Am(null, utcOffset);
 

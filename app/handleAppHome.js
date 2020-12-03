@@ -1,5 +1,3 @@
-require("dotenv").config();
-
 const {
   DEFAULT_SETTINGS,
   SETTING_ACTIVITIES_SUGGESTION_AMOUNT,
