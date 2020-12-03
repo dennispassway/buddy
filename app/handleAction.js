@@ -7,7 +7,7 @@ const {
   SETTING_USERS_TO_IGNORE,
   SETTING_UTC_OFFSET,
 } = require("./constants");
-const { updateSettingInDatabase } = require("./database");
+const { updateSettingInDatabase } = require("../database");
 const { matchNewGroups } = require("./matchNewGroups");
 
 async function handleAction({ ack, client, payload }) {

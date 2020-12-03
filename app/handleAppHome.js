@@ -29,7 +29,7 @@ const {
   SETTING_UTC_OFFSET_TITLE,
   translate,
 } = require("./translate");
-const { getSettings } = require("./database");
+const { getSettings } = require("../database");
 const { randomFromArray } = require("./utils");
 
 async function handleAppHome({ event, client }) {

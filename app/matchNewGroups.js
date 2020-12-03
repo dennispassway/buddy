@@ -2,7 +2,7 @@ const {
   addGroupsToDatabase,
   getLatestGroups,
   getSettings,
-} = require("./database");
+} = require("../database");
 const {
   GREETINGS,
   translate,

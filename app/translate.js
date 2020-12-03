@@ -4,7 +4,6 @@
   https://www.donut.com/social-watercooler-connections/
 */
 
-const { getSettings } = require("./database");
 const { SETTING_LANGUAGE, DEFAULT_SETTINGS } = require("./constants");
 
 const SETTING_UTC_OFFSET_DESCRIPTION = "SETTING_UTC_OFFSET_DESCRIPTION";

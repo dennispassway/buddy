@@ -1,6 +1,6 @@
 const path = require("path");
 const sqlite3 = require("sqlite3").verbose();
-const { INTEGER_SETTINGS } = require("./constants");
+const { INTEGER_SETTINGS } = require("../app/constants");
 
 const dbPath = path.resolve(
   process.cwd(),

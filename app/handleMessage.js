@@ -3,8 +3,7 @@ const {
   SETTING_DAY_TO_REGENERATE,
   SETTING_UTC_OFFSET,
 } = require("./constants");
-const { getLatestGroups } = require("./database");
-const { getSettings } = require("./database");
+const { getLatestGroups, getSettings } = require("../database");
 const { matchNewGroups } = require("./matchNewGroups");
 
 async function handleMessage({ client }) {
