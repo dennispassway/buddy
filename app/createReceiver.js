@@ -14,15 +14,15 @@ exports.createReceiver = function (signingSecret) {
   receiver.start = () => {};
   receiver.stop = () => {};
 
-  receiver.handleRequest = async (req, res, next) => {
+  receiver.handleRequest = async (req, res) => {
     let ackCalled = false;
 
     if (req.body && req.body.ssl_check) {
-      return respondToSslCheck(req, res, next);
+      return respondToSslCheck(req, res);
     }
 
     if (req.body && req.body.type && req.body.type === "url_verification") {
-      return respondToUrlVerification(req, res, next);
+      return respondToUrlVerification(req, res);
     }
 
     await verifySignatureAndParseRawBody(req, null, (error) => {

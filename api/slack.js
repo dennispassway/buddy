@@ -1,6 +1,6 @@
 const { receiver } = require("../app");
 
-module.exports = (req, res, next) => {
+module.exports = (req, res) => {
   console.log(req.body);
-  receiver.handleRequest(req, res, next);
+  receiver.handleRequest(req, res);
 };
