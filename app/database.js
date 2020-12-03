@@ -3,7 +3,7 @@ const sqlite3 = require("sqlite3").verbose();
 const { INTEGER_SETTINGS } = require("./constants");
 
 const dbPath = path.resolve(
-  __dirname,
+  process.cwd(),
   `${process.env.DATABASE_FILE_NAME}.sqlite3`
 );
 const db = new sqlite3.Database(dbPath);
