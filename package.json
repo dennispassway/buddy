@@ -1,0 +1,21 @@
+{
+  "name": "butch",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "dev": "nodemon app/index",
+    "start": "node app/index"
+  },
+  "engines": {
+    "node": "12.x"
+  },
+  "dependencies": {
+    "@slack/bolt": "^2.5.0",
+    "dotenv": "^8.2.0",
+    "sqlite3": "^5.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.6"
+  }
+}
