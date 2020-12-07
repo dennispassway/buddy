@@ -38,11 +38,13 @@ exports.createReceiver = function (signingSecret) {
 
         ackCalled = true;
 
+        const { actions, event } = req.body || {};
+
         const isMessage = (event || {}).type === "message";
         const isRegenerateAction =
-          (event || {}).actions &&
-          event.actions.length &&
-          event.actions.findIndex(action_id === SETTING_REGENERATE) !== -1;
+          actions &&
+          actions.length &&
+          actions.findIndex(action_id === SETTING_REGENERATE) !== -1;
 
         const timeout = isMessage || isRegenerateAction ? 5000 : 2000;
 
