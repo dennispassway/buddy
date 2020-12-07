@@ -10,8 +10,25 @@ ADMIN_USERS=
 DISABLE_USER_NOTIFICATION=
 MONGO_DB_NAME=
 MONGO_URI=
-REGENERATE_INTERVAL_IN_MILLISECONDS=
 SENTRY_DSN=
 SLACK_BOT_TOKEN=
 SLACK_SIGNING_SECRET=
+```
+
+## Settingg up your bot in Slack
+Make sure interactivity, slash commands and events are activated and all point to /api/slack.
+
+Add the following permission scopes:
+```
+app_mentions:read
+channels:history
+channels:manage
+chat:write
+groups:history
+groups:write
+im:history
+im:write
+mpim:history
+mpim:write
+users:read
 ```
