@@ -18,7 +18,7 @@ const {
   getGroupForMember,
   getLatestGroups,
   getSettings,
-} = require("../database");
+} = require("./database");
 const { randomFromArray } = require("./utils");
 const {
   SETTING_ACTIVITIES_SUGGESTION_AMOUNT,

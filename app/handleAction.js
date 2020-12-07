@@ -9,7 +9,7 @@ const {
 } = require("./constants");
 const { captureException } = require("./sentry");
 const { matchNewGroups } = require("./matchNewGroups");
-const { updateSettingInDatabase } = require("../database");
+const { updateSettingInDatabase } = require("./database");
 
 async function handleAction({ ack, client, payload }) {
   try {

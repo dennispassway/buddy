@@ -30,7 +30,7 @@ const {
   translate,
 } = require("./translate");
 const { captureException } = require("./sentry");
-const { getSettings } = require("../database");
+const { getSettings } = require("./database");
 const { randomFromArray } = require("./utils");
 
 async function handleAppHome({ event, client }) {

@@ -4,7 +4,7 @@ const {
   SETTING_UTC_OFFSET,
 } = require("./constants");
 const { captureException } = require("./sentry");
-const { getLatestGroups, getSettings } = require("../database");
+const { getLatestGroups, getSettings } = require("./database");
 const { matchNewGroups } = require("./matchNewGroups");
 
 async function handleMessage({ client }) {

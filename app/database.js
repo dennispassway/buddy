@@ -1,5 +1,5 @@
 const { MongoClient } = require("mongodb");
-const { INTEGER_SETTINGS } = require("../app/constants");
+const { INTEGER_SETTINGS } = require("./constants");
 
 const client = new MongoClient(process.env.MONGO_URI, {
   useUnifiedTopology: true,
