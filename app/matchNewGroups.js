@@ -40,15 +40,17 @@ async function matchNewGroups(client) {
 
   // Open channels for groups
   const groupsWithChannels = await openChannelsForGroups({ client, groups });
+  console.log(`New Channels opened for groups.`);
 
   // Save groups to database.
   await addGroupsToDatabase(new Date().toUTCString(), groupsWithChannels);
+  console.log(`${groups.length} groups saved to database.`);
 
   // Notify everyone of their new group
   await Promise.all(groupsWithChannels.map(welcomeMembersToGroup));
 
   // Done
-  console.log(`🎉 ${groups.length} new groups created, notified and saved.`);
+  console.log(`${groups.length} new groups notified.`);
 }
 
 async function openChannelsForGroups({ client, groups }) {

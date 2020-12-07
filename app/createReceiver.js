@@ -50,7 +50,10 @@ exports.createReceiver = function (signingSecret) {
           Set this to your expected maximum process time to keep the
           function alive till it's done.
         */
-        setTimeout(() => res.end(), process.env.ACKNOWLEDGE_TIMEOUT || 2000);
+        setTimeout(
+          () => res.end(),
+          process.env.KEEP_FUNCTION_ALIVE_FOR || 2000
+        );
       },
     };
 
