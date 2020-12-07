@@ -79,15 +79,6 @@ async function handleGroup({ channel_id, client, user_id }) {
           type: "section",
           text: {
             type: "mrkdwn",
-            text: `${randomFromArray(
-              translate(GREETINGS)
-            )} <@${user_id}>! :wave:`,
-          },
-        },
-        {
-          type: "section",
-          text: {
-            type: "mrkdwn",
             text: translate(NOT_IN_GROUP),
           },
         },
