@@ -8,7 +8,6 @@ These environment variables should be set up at your hosting provider.
 ```
 ADMIN_USERS=
 DISABLE_USER_NOTIFICATION=
-KEEP_FUNCTION_ALIVE_FOR=
 MONGO_DB_NAME=
 MONGO_URI=
 REGENERATE_INTERVAL_IN_MILLISECONDS=

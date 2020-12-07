@@ -1,3 +1,4 @@
+const { SETTING_REGENERATE } = require("./constants");
 const { ExpressReceiver } = require("@slack/bolt");
 const {
   respondToSslCheck,
@@ -35,27 +36,32 @@ exports.createReceiver = function (signingSecret) {
           return;
         }
 
-        console.log(req.body);
-
-        if (response instanceof Error) {
-          res.status(500).send();
-        } else if (!response) {
-          res.status(200).write("");
-        } else {
-          res.status(200).write(response);
-        }
-
         ackCalled = true;
 
+        const isMessage = (event || {}).type === "message";
+        const isRegenerateAction =
+          (event || {}).actions &&
+          event.actions.length &&
+          event.actions.findIndex(action_id === SETTING_REGENERATE) !== -1;
+
+        const timeout = isMessage || isRegenerateAction ? 5000 : 2000;
+
+        console.log(`timeout is ${timeout}`);
+
         /*
-          In a timeout to prevent the http connection from closing.
-          Set this to your expected maximum process time to keep the
-          function alive till it's done.
+          Some action take longer than Slack accepts so the response is in a
+          timeout to prevent the http connection from closing before the action
+          is done. This could result in operation_timed_out messages.
         */
-        setTimeout(
-          () => res.end(),
-          process.env.KEEP_FUNCTION_ALIVE_FOR || 2000
-        );
+        setTimeout(() => {
+          if (response instanceof Error) {
+            res.status(500).send();
+          } else if (!response) {
+            res.status(200).send("");
+          } else {
+            res.status(200).send(response);
+          }
+        }, timeout);
       },
     };
 
