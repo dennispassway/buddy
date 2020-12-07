@@ -44,7 +44,9 @@ exports.createReceiver = function (signingSecret) {
         const isRegenerateAction =
           actions &&
           actions.length &&
-          actions.findIndex(action_id === SETTING_REGENERATE) !== -1;
+          actions.findIndex(
+            ({ action_id }) => action_id === SETTING_REGENERATE
+          ) !== -1;
 
         const timeout = isMessage || isRegenerateAction ? 5000 : 2000;
 
