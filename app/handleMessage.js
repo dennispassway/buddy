@@ -1,5 +1,6 @@
 const {
   DEFAULT_SETTINGS,
+  REGENERATE_INTERVAL_IN_MILLISECONDS,
   SETTING_DAY_TO_REGENERATE,
   SETTING_UTC_OFFSET,
 } = require("./constants");
@@ -44,9 +45,7 @@ async function handleMessage({ client }) {
     const timeSinceLastCreation =
       todayDate.getTime() - latestGroupCreationDate.getTime();
 
-    if (
-      timeSinceLastCreation >= process.env.REGENERATE_INTERVAL_IN_MILLISECONDS
-    ) {
+    if (timeSinceLastCreation >= REGENERATE_INTERVAL_IN_MILLISECONDS) {
       return matchNewGroups(client);
     }
   } catch (error) {
