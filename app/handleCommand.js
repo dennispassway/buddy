@@ -3,6 +3,7 @@ const {
   ACTIVITIES,
   CURRENT_GROUPS_ARE,
   GREETINGS,
+  NO_GROUPS,
   NOT_IN_GROUP,
   QUESTION_INTRO,
   QUESTIONS,
@@ -77,10 +78,7 @@ async function handleGroup({ channel_id, client, user_id }) {
       blocks: [
         {
           type: "section",
-          text: {
-            type: "mrkdwn",
-            text: translate(NOT_IN_GROUP),
-          },
+          text: { type: "mrkdwn", text: translate(NOT_IN_GROUP) },
         },
       ],
       user: user_id,
@@ -94,33 +92,33 @@ async function handleGroup({ channel_id, client, user_id }) {
     .map((member) => `<@${member}>`)
     .join(", ");
 
-  const blocks = [
-    {
-      type: "section",
-      text: {
-        type: "mrkdwn",
-        text: `${randomFromArray(translate(GREETINGS))} <@${user_id}>! :wave:`,
-      },
-    },
-    {
-      type: "section",
-      text: {
-        type: "mrkdwn",
-        text: `${translate(YOUR_ARE_BUDDIES_WITH)} ${membersString}.`,
-      },
-    },
-    {
-      type: "section",
-      text: {
-        type: "mrkdwn",
-        text: `${translate(YOU_CAN_CHAT_WITH_THEM_HERE)} <#${channel}>.`,
-      },
-    },
-  ];
-
   return client.chat.postEphemeral({
     channel: channel_id,
-    blocks,
+    blocks: [
+      {
+        type: "section",
+        text: {
+          type: "mrkdwn",
+          text: `${randomFromArray(
+            translate(GREETINGS)
+          )} <@${user_id}>! :wave:`,
+        },
+      },
+      {
+        type: "section",
+        text: {
+          type: "mrkdwn",
+          text: `${translate(YOUR_ARE_BUDDIES_WITH)} ${membersString}.`,
+        },
+      },
+      {
+        type: "section",
+        text: {
+          type: "mrkdwn",
+          text: `${translate(YOU_CAN_CHAT_WITH_THEM_HERE)} <#${channel}>.`,
+        },
+      },
+    ],
     user: user_id,
   });
 }
@@ -128,37 +126,47 @@ async function handleGroup({ channel_id, client, user_id }) {
 async function handleGroups({ channel_id, client, user_id }) {
   const groups = await getLatestGroups(1);
 
-  const blocks = [
-    {
-      type: "section",
-      text: {
-        type: "mrkdwn",
-        text: `${randomFromArray(translate(GREETINGS))} <@${user_id}>! :wave:`,
-      },
-    },
-    {
-      type: "section",
-      text: {
-        type: "mrkdwn",
-        text: translate(CURRENT_GROUPS_ARE),
-      },
-    },
-    {
-      type: "section",
-      text: {
-        type: "mrkdwn",
-        text: `• ${groups
-          .map(({ members }) =>
-            members.map((member) => `<@${member}>`).join(", ")
-          )
-          .join("\n• ")}`,
-      },
-    },
-  ];
+  if (!groups || groups.length === 0) {
+    return client.chat.postEphemeral({
+      channel: channel_id,
+      blocks: [
+        {
+          type: "section",
+          text: { type: "mrkdwn", text: translate(NO_GROUPS) },
+        },
+      ],
+      user: user_id,
+    });
+  }
 
   return client.chat.postEphemeral({
     channel: channel_id,
-    blocks,
+    blocks: [
+      {
+        type: "section",
+        text: {
+          type: "mrkdwn",
+          text: `${randomFromArray(
+            translate(GREETINGS)
+          )} <@${user_id}>! :wave:`,
+        },
+      },
+      {
+        type: "section",
+        text: { type: "mrkdwn", text: translate(CURRENT_GROUPS_ARE) },
+      },
+      {
+        type: "section",
+        text: {
+          type: "mrkdwn",
+          text: `• ${groups
+            .map(({ members }) =>
+              members.map((member) => `<@${member}>`).join(", ")
+            )
+            .join("\n• ")}`,
+        },
+      },
+    ],
     user: user_id,
   });
 }
