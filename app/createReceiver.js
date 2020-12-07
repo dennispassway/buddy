@@ -35,6 +35,8 @@ exports.createReceiver = function (signingSecret) {
           return;
         }
 
+        console.log(req.body);
+
         if (response instanceof Error) {
           res.status(500).send();
         } else if (!response) {
