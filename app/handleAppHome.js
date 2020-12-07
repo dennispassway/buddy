@@ -217,7 +217,7 @@ function select({
   const initial_users =
     type === "multi_users_select"
       ? settingValue && settingValue !== ""
-        ? settingValue.split(",")
+        ? settingValue
         : []
       : null;
 
