@@ -7,8 +7,9 @@ const {
   SETTING_USERS_TO_IGNORE,
   SETTING_UTC_OFFSET,
 } = require("./constants");
-const { updateSettingInDatabase } = require("../database");
+const { captureException } = require("./sentry");
 const { matchNewGroups } = require("./matchNewGroups");
+const { updateSettingInDatabase } = require("../database");
 
 async function handleAction({ ack, client, payload }) {
   try {
@@ -39,7 +40,7 @@ async function handleAction({ ack, client, payload }) {
 
     throw new Error(`Unknown action: ${action_id}`);
   } catch (error) {
-    console.error(error); /* @TODO: Sentry */
+    captureException(error);
   }
 }
 

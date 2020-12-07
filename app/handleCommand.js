@@ -11,6 +11,7 @@ const {
   YOUR_ARE_BUDDIES_WITH,
   translate,
 } = require("./translate");
+const { captureException } = require("./sentry");
 const {
   getGroupForMember,
   getLatestGroups,
@@ -143,7 +144,7 @@ async function handleGroups({ channel_id, client, user_id }) {
 }
 
 async function handleError({ channel_id, client, error, user_id }) {
-  console.error(error); /* @TODO: sentry? */
+  captureException(error);
   const text = translate(SOMETHING_WENT_WRONG);
 
   return client.chat.postEphemeral({
@@ -170,7 +171,7 @@ async function handleCommand({ ack, client, command, say }) {
 
     await handler({ channel_id, client, say, user_id });
   } catch (error) {
-    console.error(error); /* @TODO: sentry */
+    captureException(error);
     const { channel_id, user_id } = command;
     handleError({ channel_id, client, error, user_id });
   }

@@ -2,6 +2,7 @@ require("dotenv").config();
 
 const { ACTIONS } = require("./constants");
 const { App } = require("@slack/bolt");
+const { captureException } = require("./sentry");
 const { createReceiver } = require("./createReceiver");
 const { handleAction } = require("./handleAction");
 const { handleAppHome } = require("./handleAppHome");
@@ -19,6 +20,6 @@ app.event("app_home_opened", handleAppHome);
 app.event("message", handleMessage);
 app.command("/buddy", handleCommand);
 ACTIONS.map((action) => app.action(action, handleAction));
-app.error((error) => console.error(error)); /* @TODO: sentry */
+app.error((error) => captureException(error));
 
 module.exports = { app, receiver };

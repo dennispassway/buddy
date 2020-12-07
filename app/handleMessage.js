@@ -3,6 +3,7 @@ const {
   SETTING_DAY_TO_REGENERATE,
   SETTING_UTC_OFFSET,
 } = require("./constants");
+const { captureException } = require("./sentry");
 const { getLatestGroups, getSettings } = require("../database");
 const { matchNewGroups } = require("./matchNewGroups");
 
@@ -49,7 +50,7 @@ async function handleMessage({ client }) {
       return matchNewGroups(client);
     }
   } catch (error) {
-    console.error(error); /* @TODO: sentry */
+    captureException(error);
   }
 }
 

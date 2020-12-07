@@ -29,6 +29,7 @@ const {
   SETTING_UTC_OFFSET_TITLE,
   translate,
 } = require("./translate");
+const { captureException } = require("./sentry");
 const { getSettings } = require("../database");
 const { randomFromArray } = require("./utils");
 
@@ -41,7 +42,7 @@ async function handleAppHome({ event, client }) {
       view: { type: "home", blocks: blocks },
     });
   } catch (error) {
-    console.error(error); /* @TODO: sentry */
+    captureException(error);
   }
 }
 
