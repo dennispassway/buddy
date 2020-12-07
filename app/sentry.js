@@ -4,8 +4,12 @@ if (process.env.SENTRY_DSN) {
   Sentry.init({ dsn: process.env.SENTRY_DSN });
 }
 
-module.exports = {
-  captureException: process.env.SENTRY_DSN
-    ? Sentry.captureException
-    : console.error,
+const captureException = (e) => {
+  console.error(e);
+
+  if (process.env.SENTRY_DSN) {
+    Sentry.captureException(e);
+  }
 };
+
+module.exports = { captureException };
