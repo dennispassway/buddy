@@ -46,7 +46,7 @@ exports.createReceiver = function (signingSecret) {
           }
 
           ackCalled = true;
-        }, process.env.ACKNOWLEDGE_TIMEOUT || 2000);
+        }, process.env.ACKNOWLEDGE_TIMEOUT || 3000);
       },
     };
 
