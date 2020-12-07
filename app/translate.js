@@ -13,6 +13,7 @@ const HOME_INTRO = "HOME_INTRO";
 const ACTIVITIES_INTRO = "ACTIVITIES_INTRO";
 const CURRENT_GROUPS_ARE = "CURRENT_GROUPS_ARE";
 const GREETINGS = "GREETINGS";
+const NOT_IN_GROUP = "NOT_IN_GROUP";
 const QUESTION_INTRO = "QUESTION_INTRO";
 const QUESTIONS = "QUESTIONS";
 const SOMETHING_WENT_WRONG = "SOMETHING_WENT_WRONG";
@@ -359,6 +360,9 @@ function translate(key) {
     [SOMETHING_WENT_WRONG]: {
       en: ":dog: Woofps, something went wrong. Please try again.",
     },
+    [NOT_IN_GROUP]: {
+      en: "You are not in a group at the moment.",
+    },
     [UNKNOWN_COMMAND]: {
       en: [
         {
@@ -419,6 +423,7 @@ module.exports = {
   GENERAL_SETTINGS_TITLE,
   GREETINGS,
   HOME_INTRO,
+  NOT_IN_GROUP,
   QUESTION_INTRO,
   QUESTIONS,
   REGROUP_BUDDIES_TITLE,

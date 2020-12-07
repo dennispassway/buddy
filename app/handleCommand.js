@@ -3,6 +3,7 @@ const {
   ACTIVITIES,
   CURRENT_GROUPS_ARE,
   GREETINGS,
+  NOT_IN_GROUP,
   QUESTION_INTRO,
   QUESTIONS,
   SOMETHING_WENT_WRONG,
@@ -68,7 +69,35 @@ async function handleQuestion({ say }) {
 }
 
 async function handleGroup({ channel_id, client, user_id }) {
-  const { channel, members } = await getGroupForMember(user_id);
+  const group = await getGroupForMember(user_id);
+
+  if (!group) {
+    return client.chat.postEphemeral({
+      channel: channel_id,
+      blocks: [
+        {
+          type: "section",
+          text: {
+            type: "mrkdwn",
+            text: `${randomFromArray(
+              translate(GREETINGS)
+            )} <@${user_id}>! :wave:`,
+          },
+        },
+        {
+          type: "section",
+          text: {
+            type: "mrkdwn",
+            text: translate(NOT_IN_GROUP),
+          },
+        },
+      ],
+      user: user_id,
+    });
+  }
+
+  const { channel, members } = group;
+
   const membersString = members
     .filter((id) => id !== user_id)
     .map((member) => `<@${member}>`)
