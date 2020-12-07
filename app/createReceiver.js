@@ -48,9 +48,7 @@ exports.createReceiver = function (signingSecret) {
             ({ action_id }) => action_id === SETTING_REGENERATE
           ) !== -1;
 
-        const timeout = isMessage || isRegenerateAction ? 5000 : 2000;
-
-        console.log(`timeout is ${timeout}`);
+        const timeout = isMessage || isRegenerateAction ? 5000 : 1500;
 
         /*
           Some action take longer than Slack accepts so the response is in a
