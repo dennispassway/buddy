@@ -47,7 +47,11 @@ async function matchNewGroups(client) {
   console.log(`${groups.length} groups saved to database.`);
 
   // Notify everyone of their new group
-  await Promise.all(groupsWithChannels.map(welcomeMembersToGroup));
+  await Promise.all(
+    groupsWithChannels.map(({ channel, members }) =>
+      welcomeMembersToGroup({ channel, client, members })
+    )
+  );
 
   // Done
   console.log(`${groups.length} new groups notified.`);
@@ -66,7 +70,7 @@ async function openChannelsForGroups({ client, groups }) {
   );
 }
 
-async function welcomeMembersToGroup({ channel, members }) {
+async function welcomeMembersToGroup({ channel, client, members }) {
   if (process.env.DISABLE_USER_NOTIFICATION === "true") {
     console.log(`Users not notified, DISABLE_USER_NOTIFICATION is enabled.`);
     return Promise.resolve();
