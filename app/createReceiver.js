@@ -35,15 +35,18 @@ exports.createReceiver = function (signingSecret) {
           return;
         }
 
-        if (response instanceof Error) {
-          res.status(500).send();
-        } else if (!response) {
-          res.send("");
-        } else {
-          res.send(response);
-        }
+        /* In a timeout to prevent the http connection from closing */
+        setTimeout(() => {
+          if (response instanceof Error) {
+            res.status(500).send();
+          } else if (!response) {
+            res.send("");
+          } else {
+            res.send(response);
+          }
 
-        ackCalled = true;
+          ackCalled = true;
+        }, 2000);
       },
     };
 
