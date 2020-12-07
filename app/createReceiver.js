@@ -38,9 +38,9 @@ exports.createReceiver = function (signingSecret) {
         if (response instanceof Error) {
           res.status(500).send();
         } else if (!response) {
-          res.write("");
+          res.status(200).write("");
         } else {
-          res.write(response);
+          res.status(200).write(response);
         }
 
         ackCalled = true;
