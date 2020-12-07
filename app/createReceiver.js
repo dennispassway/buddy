@@ -1,8 +1,8 @@
+const { ExpressReceiver } = require("@slack/bolt");
 const {
   respondToSslCheck,
   respondToUrlVerification,
 } = require("@slack/bolt/dist/ExpressReceiver");
-const { ExpressReceiver } = require("@slack/bolt");
 
 exports.createReceiver = function (signingSecret) {
   const receiver = new ExpressReceiver({
@@ -46,7 +46,7 @@ exports.createReceiver = function (signingSecret) {
           }
 
           ackCalled = true;
-        }, 2000);
+        }, process.env.ACKNOWLEDGE_TIMEOUT || 2000);
       },
     };
 
