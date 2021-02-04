@@ -11,7 +11,7 @@ const { captureException } = require("./sentry");
 const { matchNewGroups } = require("./matchNewGroups");
 const { updateSettingInDatabase } = require("./database");
 
-async function handleAction({ ack, client, payload }) {
+export async function handleAction({ ack, client, payload }) {
   try {
     const actionsToSaveInSettings = [
       SETTING_ACTIVITIES_SUGGESTION_AMOUNT,
@@ -43,5 +43,3 @@ async function handleAction({ ack, client, payload }) {
     captureException(error);
   }
 }
-
-module.exports = { handleAction };

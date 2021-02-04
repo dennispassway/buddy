@@ -182,7 +182,7 @@ async function handleError({ channel_id, client, error, user_id }) {
   });
 }
 
-async function handleCommand({ ack, client, command, say }) {
+export async function handleCommand({ ack, client, command, say }) {
   try {
     await ack();
 
@@ -204,5 +204,3 @@ async function handleCommand({ ack, client, command, say }) {
     handleError({ channel_id, client, error, user_id });
   }
 }
-
-module.exports = { handleCommand };

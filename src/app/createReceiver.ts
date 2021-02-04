@@ -5,7 +5,7 @@ const {
   respondToUrlVerification,
 } = require("@slack/bolt/dist/ExpressReceiver");
 
-exports.createReceiver = function (signingSecret) {
+export const createReceiver = (signingSecret) => {
   const receiver = new ExpressReceiver({
     signingSecret,
   });

@@ -1,42 +1,26 @@
-const {
-  addGroupsToDatabase,
-  getLatestGroups,
-  getSettings,
-} = require("./database");
-const {
-  GREETINGS,
-  translate,
-  WEEK,
-  YOU_ARE_BUDDIES_FOR,
-} = require("./translate");
-const {
+import { addGroupsToDatabase, getLatestGroups, getSettings } from 'app/database';
+import {
   DEFAULT_SETTINGS,
   LATEST_GROUPS_AMOUNT,
   MAX_TIMES_TO_TRY_TO_CREATE_NEW_GROUP,
   SETTING_BUDDY_GROUP_SIZE,
   SETTING_USERS_TO_IGNORE,
-} = require("./constants");
-const { randomFromArray, shuffleArray } = require("./utils");
+} from 'app/constants';
+import { randomFromArray, shuffleArray } from 'app/utils';
+import { translate } from 'app/translate';
+import { WebClient } from '@slack/web-api/dist';
 
 let timesTriedToCreateNewGroup = 0;
 
-async function matchNewGroups(client) {
+export async function matchNewGroups(client: WebClient) {
   const settings = await getSettings();
-  const buddyGroupSize =
-    settings[SETTING_BUDDY_GROUP_SIZE] ||
-    DEFAULT_SETTINGS[SETTING_BUDDY_GROUP_SIZE];
-  const usersToIgnore =
-    settings[SETTING_USERS_TO_IGNORE] ||
-    DEFAULT_SETTINGS[SETTING_USERS_TO_IGNORE];
+  const buddyGroupSize = settings[SETTING_BUDDY_GROUP_SIZE] || DEFAULT_SETTINGS[SETTING_BUDDY_GROUP_SIZE];
+  const usersToIgnore = settings[SETTING_USERS_TO_IGNORE] || DEFAULT_SETTINGS[SETTING_USERS_TO_IGNORE];
 
   // Get N latest groups and active members to create new, uniquer groups
   const latestGroups = await getLatestGroups(LATEST_GROUPS_AMOUNT);
   const activeMembers = await fetchActiveMembers({ client, usersToIgnore });
-  const groups = await createGroupsForMembers(
-    activeMembers,
-    latestGroups,
-    buddyGroupSize
-  );
+  const groups = await createGroupsForMembers(activeMembers, latestGroups, buddyGroupSize);
 
   // Open channels for groups
   const groupsWithChannels = await openChannelsForGroups({ client, groups });
@@ -48,9 +32,7 @@ async function matchNewGroups(client) {
 
   // Notify everyone of their new group
   await Promise.all(
-    groupsWithChannels.map(({ channel, members }) =>
-      welcomeMembersToGroup({ channel, client, members })
-    )
+    groupsWithChannels.map(({ channel, members }) => welcomeMembersToGroup({ channel, client, members }))
   );
 
   // Done
@@ -62,7 +44,7 @@ async function openChannelsForGroups({ client, groups }) {
     groups.map(async (group) => {
       const { channel } = await client.conversations.open({
         token: process.env.SLACK_BOT_TOKEN,
-        users: group.join(","),
+        users: group.join(','),
       });
 
       return { members: group, channel: channel.id };
@@ -71,18 +53,16 @@ async function openChannelsForGroups({ client, groups }) {
 }
 
 async function welcomeMembersToGroup({ channel, client, members }) {
-  if (process.env.DISABLE_USER_NOTIFICATION === "true") {
+  if (process.env.DISABLE_USER_NOTIFICATION === 'true') {
     console.log(`Users not notified, DISABLE_USER_NOTIFICATION is enabled.`);
     return Promise.resolve();
   }
 
-  const buddiesString = members.map((buddy) => `<@${buddy}>`).join(", ");
+  const buddiesString = members.map((buddy) => `<@${buddy}>`).join(', ');
 
-  const text = `${randomFromArray(
-    translate(GREETINGS)
-  )} ${buddiesString}. ${translate(YOU_ARE_BUDDIES_FOR)} ${translate(
-    WEEK
-  )}! :tada:`;
+  const text = `${randomFromArray(translate(GREETINGS))} ${buddiesString}. ${translate(
+    YOU_ARE_BUDDIES_FOR
+  )} ${translate(WEEK)}! :tada:`;
 
   return client.chat.postMessage({
     channel,
@@ -97,13 +77,7 @@ async function fetchActiveMembers({ client, usersToIgnore }) {
   });
 
   return members
-    .filter(
-      ({ deleted, is_bot, id }) =>
-        !deleted &&
-        !is_bot &&
-        id !== "USLACKBOT" &&
-        usersToIgnore.indexOf(id) === -1
-    )
+    .filter(({ deleted, is_bot, id }) => !deleted && !is_bot && id !== 'USLACKBOT' && usersToIgnore.indexOf(id) === -1)
     .map(({ id }) => id);
 }
 
@@ -132,28 +106,19 @@ async function createGroupsForMembers(members, latestGroups, buddyGroupSize) {
   }, []);
 
   if (latestGroups) {
-    const sortedGroups = [...newGroups.map((group) => group.sort().join(","))];
-    const sortedLatestGroupMembers = latestGroups.map(({ members }) =>
-      members.sort().join(",")
-    );
+    const sortedGroups = [...newGroups.map((group) => group.sort().join(','))];
+    const sortedLatestGroupMembers = latestGroups.map(({ members }) => members.sort().join(','));
 
-    const alreadyCreatedGroups = sortedGroups.filter(
-      (group) => sortedLatestGroupMembers.indexOf(group) !== -1
-    );
+    const alreadyCreatedGroups = sortedGroups.filter((group) => sortedLatestGroupMembers.indexOf(group) !== -1);
 
-    if (
-      alreadyCreatedGroups.length &&
-      timesTriedToCreateNewGroup < MAX_TIMES_TO_TRY_TO_CREATE_NEW_GROUP
-    ) {
+    if (alreadyCreatedGroups.length && timesTriedToCreateNewGroup < MAX_TIMES_TO_TRY_TO_CREATE_NEW_GROUP) {
       timesTriedToCreateNewGroup++;
       return createGroupsForMembers(members, latestGroups, buddyGroupSize);
     }
   }
 
   if (timesTriedToCreateNewGroup >= MAX_TIMES_TO_TRY_TO_CREATE_NEW_GROUP) {
-    console.warn(
-      `Could not fine a unique group after ${MAX_TIMES_TO_TRY_TO_CREATE_NEW_GROUP} tries.`
-    );
+    console.warn(`Could not fine a unique group after ${MAX_TIMES_TO_TRY_TO_CREATE_NEW_GROUP} tries.`);
   }
 
   console.log(
@@ -163,5 +128,3 @@ async function createGroupsForMembers(members, latestGroups, buddyGroupSize) {
 
   return newGroups;
 }
-
-module.exports = { matchNewGroups };

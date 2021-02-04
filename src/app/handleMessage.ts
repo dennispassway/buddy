@@ -8,7 +8,7 @@ const { captureException } = require("./sentry");
 const { getLatestGroups, getSettings } = require("./database");
 const { matchNewGroups } = require("./matchNewGroups");
 
-async function handleMessage({ client }) {
+export async function handleMessage({ client }) {
   try {
     const settings = await getSettings();
 
@@ -61,5 +61,3 @@ function getUTCDateAt9Am(date, offset = 0) {
   d.setUTCMilliseconds(0);
   return d;
 }
-
-module.exports = { handleMessage };

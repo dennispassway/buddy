@@ -1,3 +1,3 @@
-const { receiver } = require("../app");
+import { receiver } from 'app'
 
 module.exports = receiver.handleRequest;
